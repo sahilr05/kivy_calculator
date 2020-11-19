@@ -28,8 +28,8 @@ class MainApp(MDApp):
         self.operators = ["/", "*", "+", "-"]
         self.last_was_operator = None
         self.last_button = None
-        self.solution = MDTextFieldRect(
-            multiline=False, readonly=True, halign="right", height="40dp"
+        self.solution = TextInput(
+            multiline=False, readonly=True, halign="right", height=100, font_size=50
         )
         main_layout.add_widget(self.solution)
         buttons = [
@@ -42,12 +42,13 @@ class MainApp(MDApp):
         ]
 
         for row in buttons:
-            h_layout = MDBoxLayout(padding=10)
+            h_layout = MDBoxLayout()
             for label in row:
-                button = Button(
+                button = MDRectangleFlatButton(
                     text=label,
                     pos_hint={"center_x": 0.5, "center_y": 0.5},
-                    background_color=[1, 2, 2, 1],
+                    font_size=20,
+                    size_hint=(1, 1),
                 )
                 button.bind(on_press=self.on_button_press)
                 h_layout.add_widget(button)
