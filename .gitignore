@@ -1,0 +1,7 @@
+/venv
+/bin
+/.buildozer
+/.vscode
+buildozer.spec
+kivy_his.txt
+calc.py
