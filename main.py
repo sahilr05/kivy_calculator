@@ -1,11 +1,18 @@
 import kivy
+import math
 import random
+import re
 
 from kivymd.app import MDApp
 from kivymd.uix.textfield import MDTextFieldRect, MDTextField
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.screen import Screen, MDScreen
-from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDRectangleFlatButton, MDTextButton
+from kivymd.uix.button import (
+    MDFlatButton,
+    MDRaisedButton,
+    MDRectangleFlatButton,
+    MDTextButton,
+)
 
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -16,14 +23,17 @@ from kivy.uix.boxlayout import BoxLayout
 
 class MainApp(MDApp):
     def build(self):
-        main_layout = MDBoxLayout(orientation='vertical')
+        main_layout = MDBoxLayout(orientation="vertical")
 
         self.operators = ["/", "*", "+", "-"]
         self.last_was_operator = None
         self.last_button = None
-        self.solution = MDTextFieldRect(multiline=False, readonly=True, halign="right", height='40dp')
+        self.solution = MDTextFieldRect(
+            multiline=False, readonly=True, halign="right", height="40dp"
+        )
         main_layout.add_widget(self.solution)
         buttons = [
+            ["log", "ln", "π", "^"],
             ["7", "8", "9", "/"],
             ["4", "5", "6", "*"],
             ["1", "2", "3", "-"],
@@ -32,10 +42,12 @@ class MainApp(MDApp):
         ]
 
         for row in buttons:
-            h_layout = MDBoxLayout(padding=5)
+            h_layout = MDBoxLayout(padding=10)
             for label in row:
                 button = Button(
-                    text=label, pos_hint={"center_x": 0.5, "center_y": 0.5}, background_color=[1,2,4,1]
+                    text=label,
+                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                    background_color=[1, 2, 2, 1],
                 )
                 button.bind(on_press=self.on_button_press)
                 h_layout.add_widget(button)
@@ -55,13 +67,16 @@ class MainApp(MDApp):
             elif current == "" and button_text in self.operators:
                 return
             elif current and button_text == "√":
-                import math
                 value = float(current) or float(self.solution.text)
                 root_val = math.sqrt(value)
                 self.solution.text = str(root_val)
                 return
             elif button_text == "=":
                 return self.on_solution(instance)
+            elif button_text == "log":
+                self.solution.text = "log("
+            elif button_text == "ln":
+                self.solution.text = "ln("
             else:
                 new_text = current + button_text
                 self.solution.text = new_text
@@ -71,7 +86,22 @@ class MainApp(MDApp):
     def on_solution(self, instance):
         text = self.solution.text
         if text:
-            solution = str(eval(self.solution.text))
+            if "log" in text:
+                text = text.replace("log", "")
+                if not re.sub("[()]", "", text).isdigit():
+                    return
+                solution = str(math.log(eval(text), 10))
+            elif "ln" in text:
+                text = text.replace("ln", "")
+                if not re.sub("[()]", "", text).isdigit():
+                    return
+                solution = str(math.log(eval(text)))
+            else:
+                if "π" in text:
+                    text = text.replace("π", str(math.pi))
+                if "^" in text:
+                    text = text.replace("^", "**")
+                solution = str(eval(text))
             self.solution.text = solution
 
 
