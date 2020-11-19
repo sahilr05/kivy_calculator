@@ -29,7 +29,7 @@ class MainApp(MDApp):
         self.last_was_operator = None
         self.last_button = None
         self.solution = TextInput(
-            multiline=False, readonly=True, halign="right", height=100, font_size=50
+            multiline=False, readonly=True, halign="right", height=100, font_size=70
         )
         main_layout.add_widget(self.solution)
         buttons = [
