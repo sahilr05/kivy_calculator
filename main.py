@@ -29,11 +29,12 @@ class MainApp(MDApp):
         self.last_was_operator = None
         self.last_button = None
         self.solution = TextInput(
-            multiline=False, readonly=True, halign="right", height=100, font_size=70
+            multiline=False, readonly=True, halign="right", height=200, font_size=150
         )
         main_layout.add_widget(self.solution)
         buttons = [
-            ["log", "ln", "π", "^"],
+            ["sin", "cos", "tan", "π"],
+            ["log", "ln", "^", "fact."],
             ["7", "8", "9", "/"],
             ["4", "5", "6", "*"],
             ["1", "2", "3", "-"],
@@ -74,12 +75,11 @@ class MainApp(MDApp):
                 return
             elif button_text == "=":
                 return self.on_solution(instance)
-            elif button_text == "log":
-                self.solution.text = "log("
-            elif button_text == "ln":
-                self.solution.text = "ln("
             else:
                 new_text = current + button_text
+                ops = ['log', 'ln', 'sin', 'cos', 'tan', 'fact.']
+                if button_text in ops:
+                    new_text += '('
                 self.solution.text = new_text
         self.last_button = button_text
         self.last_was_operator = self.last_button in self.operators
@@ -97,6 +97,26 @@ class MainApp(MDApp):
                 if not re.sub("[()]", "", text).isdigit():
                     return
                 solution = str(math.log(eval(text)))
+            elif "sin" in text:
+                text = text.replace("sin", "")
+                if not re.sub("[()]", "", text).isdigit():
+                    return
+                solution = str(math.sin(eval(text)))
+            elif "cos" in text:
+                text = text.replace("cos", "")
+                if not re.sub("[()]", "", text).isdigit():
+                    return
+                solution = str(math.cos(eval(text)))
+            elif "tan" in text:
+                text = text.replace("tan", "")
+                if not re.sub("[()]", "", text).isdigit():
+                    return
+                solution = str(math.tan(eval(text)))
+            elif "fact." in text:
+                text = text.replace("fact.", "")
+                if not re.sub("[()]", "", text).isdigit():
+                    return
+                solution = str(math.factorial(eval(text)))
             else:
                 if "π" in text:
                     text = text.replace("π", str(math.pi))
