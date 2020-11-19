@@ -28,7 +28,7 @@ class MainApp(MDApp):
             ["4", "5", "6", "*"],
             ["1", "2", "3", "-"],
             [".", "0", "C", "+"],
-            ["sqr", "(", ")", "="],
+            ["√", "(", ")", "="],
         ]
 
         for row in buttons:
@@ -54,9 +54,10 @@ class MainApp(MDApp):
                 return
             elif current == "" and button_text in self.operators:
                 return
-            elif current and button_text == "sqr":
+            elif current and button_text == "√":
                 import math
-                root_val = math.sqrt(int(current))
+                value = float(current) or float(self.solution.text)
+                root_val = math.sqrt(value)
                 self.solution.text = str(root_val)
                 return
             elif button_text == "=":
