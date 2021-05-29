@@ -1,2 +1,2 @@
-# kivy_calculator
-Simple calculator made using Kivy
+# Calculator
+Simple calculator app built using Kivy
